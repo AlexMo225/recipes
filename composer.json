@@ -1,15 +1,7 @@
 {
-    "name": "lemo2/recipes",
     "autoload": {
         "psr-4": {
-            "Lemo2\\Recipes\\": "app/"
+            "App\\": "app/"
         }
-    },
-    "authors": [
-        {
-            "name": "AlexMo225",
-            "email": "95090160+AlexMo225@users.noreply.github.com"
-        }
-    ],
-    "require": {}
+    }
 }

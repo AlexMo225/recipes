@@ -1,35 +1,27 @@
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 use App\Models\Recipe;
-use App\Storage\SessionRecipeStorage;
 use App\RecipeManager;
+use App\Storage\MySqlDatabaseRecipeStorage;
 
-// Autoload
-require '/autoload.php';
+$pdo = new PDO('mysql:host=localhost;dbname=recipes;unix_socket=/Applications/MAMP/tmp/mysql/mysql.sock', 'root', '');
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Initialiser la session
-session_start();
-
-// Créer le stockage en session
-$storage = new SessionRecipeStorage();
-
-// Créer le gestionnaire de recettes
+$storage = new MySqlDatabaseRecipeStorage($pdo);
 $manager = new RecipeManager($storage);
 
-// Créer une recette
-$recipe = new Recipe;
-$recipe->setCreatedAt(new DateTime())
-    ->setName('Fondant au chocolat mi-cuit')
-    ->setDescription('La recette du fameux fondant au chocolat mi-cuit.')
-    ->setPeople(4)
-    ->setPreparationTime(40);
-$addedRecipeId = $manager->addRecipe($recipe);
+$recipe = new Recipe();
+$recipe->setCreatedAt(new DateTime());
+$recipe->setName('Pain au chocolat ');
+$recipe->setDescription('La recette du croissant.');
+$recipe->setPeople(4);
+$recipe->setPreparationTime(40);
 
-// Mettre à jour une recette
-$recipeToUpdate = $manager->getRecipe($addedRecipeId);
-$recipeToUpdate->setPreparationTime(60);
-$manager->updateRecipe($recipeToUpdate);
+echo $recipe->getName();
+echo $recipe->getDescription(); 
+echo $recipe->getPreparationTime();
 
-// Obtenir toutes les recettes
-$recipes = $manager->getRecipes();
-print_r($recipes);
+
+?>
